@@ -80,6 +80,17 @@ function Partida(num,owner){
 			}
 		}
 	}
+	this.asignarTareas=function(){
+		let tareas=["Jardines", "Basuras","Calles","Mobiliario"];
+		let sizeTareas = Object.keys(tareas).length;
+		let laTarea = tareas[randomInt(0,sizeTareas)];
+		for(var usuar in this.usuarios){
+			if(this.usuarios[usuar].impostor == false){ // añadir solamente si el usuario no es un impostor
+				this.usuarios[usuar].encargo=laTarea;
+			}
+			
+		}
+	}
 	this.agregarUsuario(owner);
 }
 
@@ -128,6 +139,7 @@ function Jugando(){
 	}
 	this.iniciarPartida=function(partida){
 		partida.asignarImpostor();
+		partida.asignarTareas();
 	}
 	this.abandonarPartida=function(nick,partida){
 		partida.eliminarUsuario(nick);
@@ -152,6 +164,7 @@ function Usuario(nick,juego){
 	this.juego=juego;
 	this.partida;
 	this.impostor=false;
+	this.encargo=null;
 	this.crearPartida=function(num){
 		return this.juego.crearPartida(num,this);
 	}
