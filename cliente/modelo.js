@@ -61,15 +61,19 @@ function Partida(num,owner){
 	}
 	this.asignarImpostor=function(){
 		let numero = Object.keys(this.usuarios).length;
-		if(numero>4 && numero<7){
-			this.usuarios[randomInt(0,this.maximo)].impostor=true;
+		console.log(numero);
+		let usr;
+		if(numero>=4 && numero<7){ //1 impostor si hay 4-6 usuarios en un partida
+			usr = Object.keys(this.usuarios)[randomInt(0,numero)];
+			this.usuarios[usr].impostor=true;
 		}
-		else if(numero>=7 && numero<=10){
+		else if(numero>=7 && numero<=10){//2 impostor si hay 7-10 usuarios en un partida
 			let rd = randomInt(0,numero);
 			let cnt = 0;
 			while (cnt != 2){
-				if(this.usuarios[rd].impostor == false){
-					this.usuarios[rd].impostor = true;
+				usr = Object.keys(this.usuarios)[rd];
+				if(this.usuarios[usr].impostor == false){
+					this.usuarios[usr].impostor = true;
 					cnt += 1;
 					rd = randomInt(0,numero);
 				}
@@ -88,7 +92,6 @@ function Inicial(){
 		}		
 	}
 	this.iniciarPartida=function(partida){
-		partida.asignarImpostor();
 		console.log("Faltan jugadores");
 	}
 	this.abandonarPartida=function(nick,partida){
@@ -124,6 +127,7 @@ function Jugando(){
 		console.log("La partida ya ha comenzado");
 	}
 	this.iniciarPartida=function(partida){
+		partida.asignarImpostor();
 	}
 	this.abandonarPartida=function(nick,partida){
 		partida.eliminarUsuario(nick);
