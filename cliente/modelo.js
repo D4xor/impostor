@@ -59,6 +59,23 @@ function Partida(num,owner){
 	this.eliminarUsuario=function(nick){
 		delete this.usuarios[nick];
 	}
+	this.asignarImpostor=function(){
+		let numero = Object.keys(this.usuarios).length;
+		if(numero>4 && numero<7){
+			this.usuarios[randomInt(0,this.maximo)].impostor=true;
+		}
+		else if(numero>=7 && numero<=10){
+			let rd = randomInt(0,numero);
+			let cnt = 0;
+			while (cnt != 2){
+				if(this.usuarios[rd].impostor == false){
+					this.usuarios[rd].impostor = true;
+					cnt += 1;
+					rd = randomInt(0,numero);
+				}
+			}
+		}
+	}
 	this.agregarUsuario(owner);
 }
 
@@ -71,6 +88,7 @@ function Inicial(){
 		}		
 	}
 	this.iniciarPartida=function(partida){
+		partida.asignarImpostor();
 		console.log("Faltan jugadores");
 	}
 	this.abandonarPartida=function(nick,partida){
@@ -129,6 +147,7 @@ function Usuario(nick,juego){
 	this.nick=nick;
 	this.juego=juego;
 	this.partida;
+	this.impostor=false;
 	this.crearPartida=function(num){
 		return this.juego.crearPartida(num,this);
 	}
@@ -142,4 +161,16 @@ function Usuario(nick,juego){
 
 function randomInt(low, high) {
 	return Math.floor(Math.random() * (high - low) + low);
+}
+
+function inicio(){
+	juego=new Juego();
+	var usr=new Usuario("Pepe",juego);
+	var codigo=usr.crearPartida(4);
+
+	juego.unirAPartida(codigo,"max");
+	juego.unirAPartida(codigo,"maxou");
+	juego.unirAPartida(codigo,"maxime");
+
+	usr.iniciarPartida();
 }
