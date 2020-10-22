@@ -43,6 +43,13 @@ describe("El juego del impostor", function() {
 		expect(juego.partidas[codigo].fase.nombre).toEqual("completado");
 	  });
 
+	it("no se puede crear partida si el num no esta entre 4 y 10",function(){
+		var codigo = juego.crearPartida(3,usr);
+		expect(codigo).toEqual("fallo");
+		codigo=juego.crearPartida(11,usr);
+		expect(codigo).toEqual(fallo);
+	});
+
 	it("Pepe inicia la partida",function(){
 		juego.unirAPartida(codigo,"ana");
 	  	var num=Object.keys(juego.partidas[codigo].usuarios).length;
