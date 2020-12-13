@@ -18,11 +18,9 @@ app.use(bodyParser.json());
 var juego = new Juego();
 
 app.get('/', function (request, response) {
-	console.log("1");
     var contenido = fs.readFileSync(__dirname + "/Cliente/index.html"); 
     response.setHeader("Content-type", "text/html");
 	response.send(contenido);
-	console.log("2");
 });
 
 app.get("/juego",function(request,response){
