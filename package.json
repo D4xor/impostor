@@ -14,7 +14,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "jasmine-node ./servidor/Jasmine/modeloSpec.js",
+    "test": "jasmine-node ./Servidor/Jasmine/modeloSpec.js",
     "start": "node server.js"
   },
   "repository": {

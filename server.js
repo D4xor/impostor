@@ -5,9 +5,9 @@ var server = require('http').Server(app);
 var bodyParser = require("body-parser");
 var io = require("socket.io").listen(server);
 
-var Juego = require("./servidor/Juego/Juego.js");
-var Usuario = require("./servidor/Juego/Usuario/Usuario.js")
-var wss = require("./servidor/servidorWS.js");
+var Juego = require("./Servidor/Juego/Juego.js");
+var Usuario = require("./Servidor/Juego/Usuario/Usuario.js")
+var wss = require("./Servidor/ServidorWS.js");
 
 app.set('port', process.env.PORT || 5000);
 
@@ -33,5 +33,5 @@ server.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });
 
-var servidorWS = new wss(io);
-servidorWS.lanzarSocketSrv(servidorWS,juego);
+var ServidorWS = new wss(io);
+ServidorWS.lanzarSocketSrv(ServidorWS,juego);

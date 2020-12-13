@@ -32,11 +32,11 @@ class clienteWS{
 	//--------------On del cliente--------------------------------
 	msgOnConnect(cliente){
 		cliente.socket.on('connect', () => {
-			alerta("Connecta al servidorWS","alert-success");
+			alerta("Connecta al ServidorWS","alert-success");
 			cliente.socket.emit("nuevaConexion");
 			cargarAcogida();
 		});
-	} //metodo terminada, para decir al servidor me conecta y caragar acogida
+	} //metodo terminada, para decir al Servidor me conecta y caragar acogida
 
 	msgOnDisconnect(cliente){
 		cliente.socket.on('disconnect', reason => {
