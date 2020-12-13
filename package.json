@@ -1,21 +1,33 @@
 {
   "name": "impostor",
   "version": "1.0.0",
-  "description": "El trabajo de la asignatura del curso 20-21",
-  "main": "index.js",
+  "description": "trabajo de procesos",
+  "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "jasmine-node": "^3.0.0"
+    "jasmine-node": "^3.0.0",
+    "socket.io": "^2.3.0"
+  },
+  "engines": {
+    "node": "12.x"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test": "./node_modules/.bin/jasmine-node servidor"
+    "test": "jasmine-node ./Servidor/Jasmine/modeloSpec.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/D4xor/impostor.git"
   },
+  "keywords": [
+    "NodeJS",
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Express"
+  ],
   "author": "Maxime Doreau",
   "license": "ISC",
   "bugs": {
