@@ -29,15 +29,15 @@ let player;
 let showDebug = false;
 
 function preload() {
-  this.load.image("tiles", "./Cliente/game2d/assets/tilesets/tuxmon-sample-32px-extruded.png");
-  this.load.tilemapTiledJSON("map", "./Cliente/game2d/assets/tilemaps/tuxemon-town.json");
+  this.load.image("tiles", "./cliente/game2d/assets/tilesets/tuxmon-sample-32px-extruded.png");
+  this.load.tilemapTiledJSON("map", "./cliente/game2d/assets/tilemaps/tuxemon-town.json");
 
   // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
   // the player animations (walking left, walking right, etc.) in one image. For more info see:
   //  https://labs.phaser.io/view.html?src=src/animation/texture%20atlas%20animation.js
   // If you don't use an atlas, you can do the same thing with a spritesheet, see:
   //  https://labs.phaser.io/view.html?src=src/animation/single%20sprite%20sheet.js
-  this.load.atlas("atlas", "./Cliente/game2d/assets/atlas/atlas.png", "./Cliente/game2d/assets/atlas/atlas.json");
+  this.load.atlas("atlas", "./cliente/game2d/assets/atlas/atlas.png", "./cliente/game2d/assets/atlas/atlas.json");
 }
 
 function create() {

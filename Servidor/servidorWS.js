@@ -1,7 +1,7 @@
 var Usuario = require("./Juego/Usuario/Usuario.js");
 var msg = "";
 
-module.exports = class ServidorWS{
+module.exports = class servidorWS{
 	constructor(io){
 		this.io = io;
 	}
@@ -16,11 +16,11 @@ module.exports = class ServidorWS{
 		});
 	}
 
-	//---------On Servidor------------------
+	//---------On servidor------------------
 	msgSocketOnConnection(servidor,socket,juego){
 		socket.on("nuevaConexion", () => {
 			console.log("nueva conexion", socket.id);
-			servidor.serverEnviarACliente(socket,"conectado",servidor.getNumJugInPartidas(juego));
+			servidor.serverEnviarAcliente(socket,"conectado",servidor.getNumJugInPartidas(juego));
 			socket.join("acogida");
 		});
 	} //metodo terminado -> recuperar lista de partidas
@@ -32,11 +32,11 @@ module.exports = class ServidorWS{
 				console.log("Nueva partida : "+result.codigoPartida);
 				socket.leave("acogida");
 				socket.join(result.codigoPartida);
-				servidor.serverEnviarACliente(socket,"partidaCreada",{"nombre":nombre,"codigo":result.codigoPartida,"isOwner":true});
+				servidor.serverEnviarAcliente(socket,"partidaCreada",{"nombre":nombre,"codigo":result.codigoPartida,"isOwner":true});
 				servidor.serverEnviarARoom(socket,"acogida","nuevaPartidaDisponible",{"codigo":result.codigoPartida,"numJug":1,"numJugMax":num});
 			}
 			else
-				servidor.serverEnviarACliente(socket,"partidaCreada",result);
+				servidor.serverEnviarAcliente(socket,"partidaCreada",result);
 		});
 	} //metodo terminado, crear -> ir en lobby -> enviar nueva partida a otro jugadores en acogida
 
@@ -45,13 +45,13 @@ module.exports = class ServidorWS{
 			var index = juego.partidaExiste(codigo);
 			if(index.hasOwnProperty("msg")){
 				console.log("No existe codigo "+codigo);
-				servidor.serverEnviarACliente(socket,"unidoAPartida",{"msg":index.msg});
+				servidor.serverEnviarAcliente(socket,"unidoAPartida",{"msg":index.msg});
 			} else {
 				let partida = juego.getPartidas()[index];
 				msg = partida.unirAPartida(nick);
 				if(msg.unida == false){
 					console.log("Partida completa: "+codigo);
-					servidor.serverEnviarACliente(socket,"unidoAPartida",{"msg":msg.msg});
+					servidor.serverEnviarAcliente(socket,"unidoAPartida",{"msg":msg.msg});
 				} else {
 					let usuarios = [];
 					let ids = [];
@@ -60,7 +60,7 @@ module.exports = class ServidorWS{
 					socket.join(codigo);
 					partida.getUsuarios().forEach(usuario => {usuarios.push(usuario.getNombre()); ids.push(usuario.getId())});
 					msg = {"nombre":partida.getUsuarios()[partida.getNickOwner()].getNombre(),"codigo":partida.getCodigo(),"usuarios":usuarios, "ids":ids,"id":msg.id};
-					servidor.serverEnviarACliente(socket,"unidoAPartida",msg);
+					servidor.serverEnviarAcliente(socket,"unidoAPartida",msg);
 					servidor.serverEnviarARoom(socket,codigo,"UsuarioSeUnidaAPartida",{"nombre":nick,"estadoPartida":servidor.getEstadoPartida(juego,index),"codigo":codigo,"ids":ids});
 					servidor.serverEnviarARoom(socket,"acogida","actualizarNumJug",{"codigo":partida.getCodigo(),"numJug":partida.getUsuarios().length,"numJugMax":partida.getNumUsuarios()});
 				}
@@ -82,14 +82,14 @@ module.exports = class ServidorWS{
 			var index = juego.partidaExiste(codigo);
 			if(index.hasOwnProperty("msg")){
 				console.log("No existe codigo "+codigo);
-				servidor.serverEnviarACliente(socket,"unidoAPartida",{"msg":index.msg});
+				servidor.serverEnviarAcliente(socket,"unidoAPartida",{"msg":index.msg});
 			} else {
 				let isOwner = juego.comprobarOwner(index,id)
 				if(id = isOwner){
 					let result = juego.getPartidas()[index].iniciarPartida();
 					servidor.serverEnviarATodosEnRoom(codigo,"partidaIniciada",true);
 				} else
-					servidor.serverEnviarACliente(codigo,"partidaIniciada",isOwner.msg);
+					servidor.serverEnviarAcliente(codigo,"partidaIniciada",isOwner.msg);
 			}
 		});
 	} 
@@ -103,7 +103,7 @@ module.exports = class ServidorWS{
 		this.io.in(room).emit(topic,msg);
 	}
 
-	serverEnviarACliente(socket,topic,msg){
+	serverEnviarAcliente(socket,topic,msg){
 		socket.emit(topic,msg);
 	}
 
@@ -111,7 +111,7 @@ module.exports = class ServidorWS{
 		this.io.sockets.emit(topic,msg);
 	}
 
-	serverEnviarASpecificCliente(socketId,topic,msg){
+	serverEnviarASpecificcliente(socketId,topic,msg){
 		this.io.to(socketId).emit(topic,msg);
 	}
 

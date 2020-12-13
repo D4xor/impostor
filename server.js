@@ -5,9 +5,9 @@ var server = require('http').Server(app);
 var bodyParser = require("body-parser");
 var io = require("socket.io").listen(server);
 
-var Juego = require("./Servidor/Juego/Juego.js");
-var Usuario = require("./Servidor/Juego/Usuario/Usuario.js")
-var wss = require("./Servidor/servidorWS.js");
+var Juego = require("./servidor/Juego/Juego.js");
+var Usuario = require("./servidor/Juego/Usuario/Usuario.js")
+var wss = require("./servidor/servidorWS.js");
 
 app.set('port', process.env.PORT || 5000);
 

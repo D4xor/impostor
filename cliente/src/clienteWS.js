@@ -29,7 +29,7 @@ class clienteWS{
 		this.msgOnPartidaIniciada(cliente);
 	}
 
-	//--------------On del Cliente--------------------------------
+	//--------------On del cliente--------------------------------
 	msgOnConnect(cliente){
 		cliente.socket.on('connect', () => {
 			alerta("Connecta al servidorWS","alert-success");
