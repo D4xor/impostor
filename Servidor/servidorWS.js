@@ -6,52 +6,52 @@ module.exports = class ServidorWS{
 		this.io = io;
 	}
 
-	lanzarSocketSrv(Servidor,juego){
+	lanzarSocketSrv(servidor,juego){
 		this.io.on("connection", (socket) => {
-			Servidor.msgSocketOnConnection(Servidor,socket,juego);
-			Servidor.msgSocketOnCrearPartida(Servidor,socket,juego);
-			Servidor.msgSocketOnUnirAPartida(Servidor,socket,juego);
-			Servidor.msgSocketAbandonarPartida(Servidor,socket,juego);
-			Servidor.msgSocketOnIniciarPartida(Servidor,socket,juego);
+			servidor.msgSocketOnConnection(servidor,socket,juego);
+			servidor.msgSocketOnCrearPartida(servidor,socket,juego);
+			servidor.msgSocketOnUnirAPartida(servidor,socket,juego);
+			servidor.msgSocketAbandonarPartida(servidor,socket,juego);
+			servidor.msgSocketOnIniciarPartida(servidor,socket,juego);
 		});
 	}
 
 	//---------On Servidor------------------
-	msgSocketOnConnection(Servidor,socket,juego){
+	msgSocketOnConnection(servidor,socket,juego){
 		socket.on("nuevaConexion", () => {
 			console.log("nueva conexion", socket.id);
-			Servidor.serverEnviarAcliente(socket,"conectado",Servidor.getNumJugInPartidas(juego));
+			servidor.serverEnviarACliente(socket,"conectado",servidor.getNumJugInPartidas(juego));
 			socket.join("acogida");
 		});
 	} //metodo terminado -> recuperar lista de partidas
 
-	msgSocketOnCrearPartida(Servidor,socket,juego){
+	msgSocketOnCrearPartida(servidor,socket,juego){
 		socket.on("crearPartida", (num,nombre) => {
 			let result = juego.crearPartida(parseInt(num),nombre);
 			if(!("msg" in result)){
 				console.log("Nueva partida : "+result.codigoPartida);
 				socket.leave("acogida");
 				socket.join(result.codigoPartida);
-				Servidor.serverEnviarAcliente(socket,"partidaCreada",{"nombre":nombre,"codigo":result.codigoPartida,"isOwner":true});
-				Servidor.serverEnviarARoom(socket,"acogida","nuevaPartidaDisponible",{"codigo":result.codigoPartida,"numJug":1,"numJugMax":num});
+				servidor.serverEnviarACliente(socket,"partidaCreada",{"nombre":nombre,"codigo":result.codigoPartida,"isOwner":true});
+				servidor.serverEnviarARoom(socket,"acogida","nuevaPartidaDisponible",{"codigo":result.codigoPartida,"numJug":1,"numJugMax":num});
 			}
 			else
-				Servidor.serverEnviarAcliente(socket,"partidaCreada",result);
+				servidor.serverEnviarACliente(socket,"partidaCreada",result);
 		});
 	} //metodo terminado, crear -> ir en lobby -> enviar nueva partida a otro jugadores en acogida
 
-	msgSocketOnUnirAPartida(Servidor,socket,juego){
+	msgSocketOnUnirAPartida(servidor,socket,juego){
 		socket.on("unirAPartida", (codigo,nick) => {
 			var index = juego.partidaExiste(codigo);
 			if(index.hasOwnProperty("msg")){
 				console.log("No existe codigo "+codigo);
-				Servidor.serverEnviarAcliente(socket,"unidoAPartida",{"msg":index.msg});
+				servidor.serverEnviarACliente(socket,"unidoAPartida",{"msg":index.msg});
 			} else {
 				let partida = juego.getPartidas()[index];
 				msg = partida.unirAPartida(nick);
 				if(msg.unida == false){
 					console.log("Partida completa: "+codigo);
-					Servidor.serverEnviarAcliente(socket,"unidoAPartida",{"msg":msg.msg});
+					servidor.serverEnviarACliente(socket,"unidoAPartida",{"msg":msg.msg});
 				} else {
 					let usuarios = [];
 					let ids = [];
@@ -60,41 +60,41 @@ module.exports = class ServidorWS{
 					socket.join(codigo);
 					partida.getUsuarios().forEach(usuario => {usuarios.push(usuario.getNombre()); ids.push(usuario.getId())});
 					msg = {"nombre":partida.getUsuarios()[partida.getNickOwner()].getNombre(),"codigo":partida.getCodigo(),"usuarios":usuarios, "ids":ids,"id":msg.id};
-					Servidor.serverEnviarAcliente(socket,"unidoAPartida",msg);
-					Servidor.serverEnviarARoom(socket,codigo,"UsuarioSeUnidaAPartida",{"nombre":nick,"estadoPartida":Servidor.getEstadoPartida(juego,index),"codigo":codigo,"ids":ids});
-					Servidor.serverEnviarARoom(socket,"acogida","actualizarNumJug",{"codigo":partida.getCodigo(),"numJug":partida.getUsuarios().length,"numJugMax":partida.getNumUsuarios()});
+					servidor.serverEnviarACliente(socket,"unidoAPartida",msg);
+					servidor.serverEnviarARoom(socket,codigo,"UsuarioSeUnidaAPartida",{"nombre":nick,"estadoPartida":servidor.getEstadoPartida(juego,index),"codigo":codigo,"ids":ids});
+					servidor.serverEnviarARoom(socket,"acogida","actualizarNumJug",{"codigo":partida.getCodigo(),"numJug":partida.getUsuarios().length,"numJugMax":partida.getNumUsuarios()});
 				}
 			}
 		});
 	} //metodo terminado -> unir a partida, enviar numJug para refrescar en acogida numero usuario en una partida
 
-	msgSocketAbandonarPartida(Servidor,socket,juego){
+	msgSocketAbandonarPartida(servidor,socket,juego){
 		socket.on("abandonarPartida", (codigo,idBorrada) => {
 			var index = juego.partidaExiste(codigo)
 			let partida = juego.getPartidas()[index];
 			partida.abandonarPartida(idBorrada);
-			Servidor.serverEnviarARoom(socket,codigo,"UnUsuarioAbandonaPartida",idBorrada);
+			servidor.serverEnviarARoom(socket,codigo,"UnUsuarioAbandonaPartida",idBorrada);
 		});
 	}
 
-	msgSocketOnIniciarPartida(Servidor,socket,juego){
+	msgSocketOnIniciarPartida(servidor,socket,juego){
 		socket.on("iniciarPartida", (codigo,id) => {
 			var index = juego.partidaExiste(codigo);
 			if(index.hasOwnProperty("msg")){
 				console.log("No existe codigo "+codigo);
-				Servidor.serverEnviarAcliente(socket,"unidoAPartida",{"msg":index.msg});
+				servidor.serverEnviarACliente(socket,"unidoAPartida",{"msg":index.msg});
 			} else {
 				let isOwner = juego.comprobarOwner(index,id)
 				if(id = isOwner){
 					let result = juego.getPartidas()[index].iniciarPartida();
-					Servidor.serverEnviarATodosEnRoom(codigo,"partidaIniciada",true);
+					servidor.serverEnviarATodosEnRoom(codigo,"partidaIniciada",true);
 				} else
-					Servidor.serverEnviarAcliente(codigo,"partidaIniciada",isOwner.msg);
+					servidor.serverEnviarACliente(codigo,"partidaIniciada",isOwner.msg);
 			}
 		});
 	} 
 
-	//--------Emit Servidor-----------------
+	//--------Emit servidor-----------------
 	serverEnviarARoom(socket,room,topic,msg){
 		socket.to(room).emit(topic,msg);
 	}
@@ -103,7 +103,7 @@ module.exports = class ServidorWS{
 		this.io.in(room).emit(topic,msg);
 	}
 
-	serverEnviarAcliente(socket,topic,msg){
+	serverEnviarACliente(socket,topic,msg){
 		socket.emit(topic,msg);
 	}
 
@@ -111,11 +111,11 @@ module.exports = class ServidorWS{
 		this.io.sockets.emit(topic,msg);
 	}
 
-	serverEnviarASpecificcliente(socketId,topic,msg){
+	serverEnviarASpecificCliente(socketId,topic,msg){
 		this.io.to(socketId).emit(topic,msg);
 	}
 
-	//function del Servidor----------------
+	//function del servidor----------------
 	getNumJugInPartidas(juego){
 		let listaPartidas = [];
 		juego.getPartidas().forEach(partida => {

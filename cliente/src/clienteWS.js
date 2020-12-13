@@ -8,7 +8,7 @@ class clienteWS{
 		this.isOwner = false;
 	}
 
-	//--------------Initialization del clienteWS------------------------------
+	//--------------Initialization del clienteWS-----------------------------
 	initializarSocket(){
 		this.socket = io("https://impostor-maxime-doreau.herokuapp.com/");
 		//this.socket = io("http://localhost:5000/");
@@ -29,14 +29,14 @@ class clienteWS{
 		this.msgOnPartidaIniciada(cliente);
 	}
 
-	//--------------On del cliente--------------------------------
+	//--------------On del Cliente--------------------------------
 	msgOnConnect(cliente){
 		cliente.socket.on('connect', () => {
-			alerta("Connecta al ServidorWS","alert-success");
+			alerta("Connecta al servidorWS","alert-success");
 			cliente.socket.emit("nuevaConexion");
 			cargarAcogida();
 		});
-	} //metodo terminada, para decir al Servidor me conecta y caragar acogida
+	} //metodo terminada, para decir al servidor me conecta y caragar acogida
 
 	msgOnDisconnect(cliente){
 		cliente.socket.on('disconnect', reason => {
@@ -125,7 +125,7 @@ class clienteWS{
 
 	msgOnPartidaIniciada(cliente){
 		cliente.socket.on("partidaIniciada", data => {
-			window.location.href = "https://impostor-maxime-doreau.herokuapp.com/juego";
+			window.location.href = "https://impostor-maxime-doreau.herokuapp.com/";
 			//window.location.href = "http://localhost:5000/juego";
 		});
 	} //Metodo terminado, Para iniciar la partida
