@@ -35,38 +35,3 @@ server.listen(app.get('port'), function () {
 
 var servidorWS = new wss(io);
 servidorWS.lanzarSocketSrv(servidorWS,juego);
-
-
-/*app.get("/crearPartida/:num/:nick",function(request,response){
-	let owner = request.params.nick;
-	let num = request.params.num;
-	let codigo = juego.crearPartida(num,new Usuario(owner));
-
-	response.send({"codigo":codigo});
-});
-
-app.get("/unirAPartida/:codigo/:nick",function(request,response){
-	let codigo = request.params.codigo;
-	let nick = request.params.nick;
-	let msg = "";
-	let encontrado = juego.partidaExiste(codigo)
-	if(encontrado[0] == true){
-		msg = juego.partidas[encontrado[1]].fase.agregarUsuario(new Usuario(nick),juego.partidas[encontrado[1]].usuarios,juego.partidas[encontrado[1]].numUsuario);
-		response.send({"unida":msg});
-	} else
-		response.send({"error":msg});
-});
-
-app.get("/iniciarPartida/:codigo",function(request,response){
-	let codigo = request.params.codigo;
-	let encontrado = juego.partidaExiste(codigo)
-	if(encontrado[0] == true){
-		juego.partidas[encontrado[1]].iniciarPartida();
-		response.send({"Inicia":"La partida es iniciado"});
-	 } else
-		response.send({"error":"no hay partida con este codigo"});
-});
-
-app.get("/listaDePartidas",function(request,response){
-	response.send({"partidas":juego.getPartidas()});
-});*/
