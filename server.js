@@ -18,13 +18,13 @@ app.use(bodyParser.json());
 var juego = new Juego();
 
 app.get('/', function (request, response) {
-    var contenido = fs.readFileSync(__dirname + "/Cliente/index.html"); 
+    var contenido = fs.readFileSync(__dirname + "/cliente/index.html"); 
     response.setHeader("Content-type", "text/html");
     response.send(contenido);
 });
 
 app.get("/juego",function(request,response){
-	var contenido = fs.readFileSync(__dirname + "/Cliente/game2d/index-game.html"); 
+	var contenido = fs.readFileSync(__dirname + "/cliente/game2d/index-game.html"); 
     response.setHeader("Content-type", "text/html");
     response.send(contenido);
 });

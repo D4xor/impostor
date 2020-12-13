@@ -23,7 +23,7 @@ module.exports = class ServidorWS{
 			servidor.serverEnviarACliente(socket,"conectado",servidor.getNumJugInPartidas(juego));
 			socket.join("acogida");
 		});
-	} //metodo terminado -> recuperar lista de partidas
+	} //metodo terminado -> recuperar lista de partidas 
 
 	msgSocketOnCrearPartida(servidor,socket,juego){
 		socket.on("crearPartida", (num,nombre) => {
