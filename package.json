@@ -1,8 +1,18 @@
 {
   "name": "impostor",
   "version": "1.0.0",
-  "description": "impostorjuego",
+  "description": "trabajo de procesos",
   "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jasmine-node": "^3.0.0",
+    "socket.io": "^2.3.0"
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "jasmine-node ./Servidor/Jasmine/modeloSpec.js",
     "start": "node server.js"
@@ -12,18 +22,16 @@
     "url": "git+https://github.com/D4xor/impostor.git"
   },
   "keywords": [
-    "impostor"
+    "NodeJS",
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Express"
   ],
   "author": "Maxime Doreau",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/D4xor/impostor/issues"
   },
-  "homepage": "https://github.com/D4xor/impostor#readme",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "jasmine-node": "^3.0.0",
-    "socket.io": "^3.0.4"
-  }
+  "homepage": "https://github.com/D4xor/impostor#readme"
 }
