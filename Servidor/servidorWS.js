@@ -16,7 +16,7 @@ module.exports = class servidorWS{
 		});
 	}
 
-	//---------On servidor------------------
+	//---------On servidor-------------------
 	msgSocketOnConnection(servidor,socket,juego){
 		socket.on("nuevaConexion", () => {
 			console.log("nueva conexion", socket.id);

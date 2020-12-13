@@ -8,7 +8,7 @@ class clienteWS{
 		this.isOwner = false;
 	}
 
-	//--------------Initialization del clienteWS-----------------------------
+	//--------------Initialization del clienteWS------------------------------
 	initializarSocket(){
 		this.socket = io("https://impostor-maxime-doreau.herokuapp.com/");
 		//this.socket = io("http://localhost:5000/");
