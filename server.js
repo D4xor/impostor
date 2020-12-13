@@ -16,18 +16,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 var juego = new Juego();
+console.log("1");
 
 app.get('/', function (request, response) {
     var contenido = fs.readFileSync(__dirname + "/Cliente/index.html"); 
     response.setHeader("Content-type", "text/html");
     response.send(contenido);
 });
+console.log("2");
 
 app.get("/juego",function(request,response){
 	var contenido = fs.readFileSync(__dirname + "/Cliente/game2d/index-game.html"); 
     response.setHeader("Content-type", "text/html");
     response.send(contenido);
 });
+console.log("3");
 
 server.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
